@@ -4,6 +4,18 @@ Todos los cambios relevantes de este proyecto se documentan en este archivo.
 
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el proyecto se adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## Unreleased
+
+### Added
+
+- Aplicación de demostración `workshop_app/` con Flask y SQLite para gestionar
+  clientes, vehículos y órdenes de un taller mecánico.
+- Modo privacidad, auditoría, logs sanitizados, exportación JSON anonimizada y
+  laboratorio de texto en la app de demostración.
+- Reglas de ejemplo para teléfonos, nombres, direcciones y VIN usando solo la
+  API pública de `pii-anonymizer`.
+- Pruebas de humo de la app con Flask test client.
+
 ## 1.0.0 - 2026-11-24
 
 ### Added

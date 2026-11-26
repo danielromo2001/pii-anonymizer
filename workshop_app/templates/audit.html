@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Auditoría · Taller El Motor{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Auditoría de cumplimiento</h1>
+    <p class="muted">Conteos agregados sin exponer valores personales.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('export') }}">Descargar JSON anonimizado</a>
+</div>
+
+<section class="stats-grid">
+  <article class="stat-card">
+    <span>Campos escaneados</span>
+    <strong>{{ report.total_fields_scanned }}</strong>
+  </article>
+  <article class="stat-card">
+    <span>Campos anonimizados</span>
+    <strong>{{ report.anonymized_fields_count }}</strong>
+  </article>
+  <article class="stat-card">
+    <span>Categorías detectadas</span>
+    <strong>{{ report.detected_categories|length }}</strong>
+  </article>
+  <article class="stat-card">
+    <span>Reglas aplicadas</span>
+    <strong>{{ report.applied_rule_ids|length }}</strong>
+  </article>
+</section>
+
+<div class="detail-grid">
+  <section class="card">
+    <h2>Hallazgos por categoría</h2>
+    {% if report.detected_categories %}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Categoría</th><th>Conteo</th></tr></thead>
+        <tbody>
+          {% for category, count in report.detected_categories.items() %}
+          <tr>
+            <td><span class="chip">{{ category }}</span></td>
+            <td>{{ count }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="empty">No se detectaron categorías sensibles.</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h2>Reglas aplicadas</h2>
+    {% if report.applied_rule_ids %}
+    <div class="chips">
+      {% for rule_id in report.applied_rule_ids %}
+      <span class="chip">{{ rule_id }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">No se aplicó ninguna regla.</p>
+    {% endif %}
+    <p class="note">
+      El reporte contiene únicamente conteos y metadatos. No incluye correos,
+      teléfonos, documentos ni fragmentos de texto original.
+    </p>
+  </section>
+</div>
+
+{% if sample %}
+<section class="card">
+  <div class="card-header">
+    <div>
+      <h2>Muestra anonimizada</h2>
+      <p class="muted">Así se ve el primer cliente al pasar por <code>anonymize_map</code>.</p>
+    </div>
+  </div>
+  <dl class="data-list">
+    <dt>Nombre</dt>
+    <dd>{{ sample.full_name }}</dd>
+    <dt>Correo</dt>
+    <dd>{{ sample.email }}</dd>
+    <dt>Teléfono</dt>
+    <dd>{{ sample.phone }}</dd>
+    <dt>Documento</dt>
+    <dd>{{ sample.document_id }}</dd>
+    <dt>Dirección</dt>
+    <dd>{{ sample.address }}</dd>
+  </dl>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>¿Cómo se calcula?</h2>
+  <p>
+    La app construye un diccionario anidado con clientes, vehículos y órdenes.
+    Luego llama a <code>audit_compliance</code>, que recorre todos los valores
+    escalares y cuenta cuántos campos se transformaron y qué categorías se
+    detectaron.
+  </p>
+  <p class="note">
+    La exportación usa <code>anonymize_map</code> sobre la misma estructura,
+    por lo que el archivo descargado tampoco contiene PII en claro.
+  </p>
+</section>
+{% endblock %}

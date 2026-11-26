@@ -216,7 +216,29 @@ python examples/demo_cli.py
 
 El script usa exclusivamente la API pública y muestra las cuatro funcionalidades, además de una extensión `PhoneNumberDetector` + `RedactionTagStrategy`.
 
-## 10. Documentación
+## 10. Aplicación de ejemplo: taller mecánico
+
+El repositorio incluye una app web local en `workshop_app/` para probar la
+librería en un caso de uso realista: gestión de clientes, vehículos y órdenes de
+trabajo de un taller mecánico.
+
+```powershell
+pip install -r workshop_app/requirements.txt
+python -m workshop_app.app
+```
+
+Abre `http://127.0.0.1:5000`. La app incluye:
+
+- modo privacidad global para enmascarar datos en listados y fichas;
+- auditoría con `audit_compliance`;
+- logs sanitizados con `anonymize_text`;
+- exportación JSON anonimizada con `anonymize_map`;
+- laboratorio de texto para probar detección de correos, tarjetas y teléfonos.
+
+Consulta [workshop_app/README.md](workshop_app/README.md) para el recorrido
+completo y las instrucciones de instalación.
+
+## 11. Documentación
 
 ### Funcional
 
@@ -236,7 +258,7 @@ El script usa exclusivamente la API pública y muestra las cuatro funcionalidade
 - ADR-003: [Patrón estructural Composite](docs/02-tecnica/adr/003-patron-estructural-composite.md)
 - ADR-004: [Patrones de comportamiento Strategy y Chain](docs/02-tecnica/adr/004-patrones-comportamiento-strategy-chain.md)
 
-## 11. Notas de seguridad
+## 12. Notas de seguridad
 
 - Las estrategias parciales conservan extremos para mantener legibilidad operativa; no deben usarse como único control en datos de altísima sensibilidad.
 - El *hash* es irreversible, pero un espacio de valores pequeño podría ser atacado por fuerza bruta si el *salt* se filtra. Proteja el `SaltProvider` en producción.

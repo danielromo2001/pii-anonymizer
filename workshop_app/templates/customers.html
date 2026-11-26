@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Clientes · Taller El Motor{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Clientes</h1>
+    <p class="muted">Consulta y administra los datos de contacto del taller.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('customer_create') }}">Nuevo cliente</a>
+</div>
+
+<form class="search-bar" method="get" action="{{ url_for('customers') }}">
+  <input type="search" name="q" value="{{ query }}" placeholder="Buscar por nombre, correo, teléfono o documento">
+  <button class="btn" type="submit">Buscar</button>
+  {% if query %}
+  <a class="btn btn-ghost" href="{{ url_for('customers') }}">Limpiar</a>
+  {% endif %}
+</form>
+
+<div class="card">
+  {% if customers %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Correo</th>
+          <th>Teléfono</th>
+          <th>Documento</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for customer in customers %}
+        <tr>
+          <td>
+            <strong>{{ customer.full_name }}</strong>
+            <small class="block muted">{{ customer.address }}</small>
+          </td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.phone }}</td>
+          <td>{{ customer.document_id }}</td>
+          <td><a class="link" href="{{ url_for('customer_detail', customer_id=customer.id) }}">Ver ficha</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No se encontraron clientes con ese criterio.</p>
+  {% endif %}
+</div>
+{% endblock %}

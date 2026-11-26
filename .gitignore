@@ -9,6 +9,9 @@ dist/
 *.egg-info/
 *.egg
 
+# Local demo database
+workshop_app/workshop.db
+
 # Test and coverage artifacts
 .pytest_cache/
 .coverage

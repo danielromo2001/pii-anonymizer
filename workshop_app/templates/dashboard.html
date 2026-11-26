@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Inicio · Taller El Motor{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">Gestión de clientes</span>
+    <h1>Un taller ordenado, con la privacidad bajo control.</h1>
+    <p>
+      Administra clientes, vehículos y órdenes de trabajo. Activa el modo
+      privacidad para ver cómo se enmascaran los datos personales antes de
+      compartirlos.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="{{ url_for('customer_create') }}">Nuevo cliente</a>
+      <a class="btn btn-light" href="{{ url_for('work_order_create') }}">Nueva orden</a>
+      <a class="btn btn-ghost-light" href="{{ url_for('audit') }}">Ver auditoría</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <h2>¿Qué demuestra esta app?</h2>
+    <ul class="check-list">
+      <li>Enmascaramiento de datos en listados y fichas.</li>
+      <li>Auditoría con conteos, sin exponer PII.</li>
+      <li>Logs de actividad sanitizados.</li>
+      <li>Exportación JSON completamente anonimizada.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="stats-grid">
+  <article class="stat-card">
+    <span>Clientes</span>
+    <strong>{{ stats.customers }}</strong>
+  </article>
+  <article class="stat-card">
+    <span>Vehículos</span>
+    <strong>{{ stats.vehicles }}</strong>
+  </article>
+  <article class="stat-card">
+    <span>Órdenes abiertas</span>
+    <strong>{{ stats.open_orders }}</strong>
+  </article>
+  <article class="stat-card">
+    <span>Órdenes totales</span>
+    <strong>{{ stats.orders }}</strong>
+  </article>
+</section>
+
+<section class="card">
+  <div class="card-header">
+    <div>
+      <h2>Órdenes recientes</h2>
+      <p class="muted">Últimos trabajos registrados en el taller.</p>
+    </div>
+    <a class="link" href="{{ url_for('work_orders') }}">Ver todas</a>
+  </div>
+
+  {% if recent_orders %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Vehículo</th>
+          <th>Estado</th>
+          <th>Costo</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in recent_orders %}
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.customer_name }}</td>
+          <td>{{ order.vehicle_plate }}</td>
+          <td><span class="badge {{ order.status|status_class }}">{{ order.status }}</span></td>
+          <td>{{ order.cost|currency }}</td>
+          <td><a class="link" href="{{ url_for('work_order_detail', order_id=order.id) }}">Ver</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">Todavía no hay órdenes registradas.</p>
+  {% endif %}
+</section>
+{% endblock %}
