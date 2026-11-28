@@ -9,14 +9,15 @@
 
 `pii-anonymizer` es una librería Python 3.11+ que detecta, enmascara y audita
 PII en estructuras en memoria. No usa base de datos, red ni servicios externos:
-toda la operación ocurre en el proceso del cliente. La app de demostración
-(`pii-anonymizer-workshop-app`) es Flask + SQLite y consume la librería a través
-de `pii_anonymizer.api`.
+toda la operación ocurre en el proceso del cliente. Se usa desde
+`examples/demo_cli.py` y la suite de pruebas. La app de demostración del taller
+(`pii-anonymizer-workshop-app`) es un CRUD Flask + SQLite independiente que
+**no** consume la librería.
 
 Se evalúa migrar el componente a Rust para obtener un artefacto más ligero,
 mayor rendimiento y un binario único. La pregunta relevante no es solo
 "¿Rust es más rápido?", sino "¿el beneficio justifica el coste de cambiar el
-contrato, el empaquetado y la integración con la app?".
+contrato, el empaquetado y la integración con los consumidores?".
 
 ## Métricas del componente actual
 
@@ -41,23 +42,23 @@ probado y documentado.
 
 ### Opción 1: Mantener Python (recomendada)
 
-- **Ventajas:** cero coste de migración; la API y la app siguen funcionando;
-  el equipo mantiene una sola base de código y un solo conjunto de pruebas;
-  el despliegue actual (`pip install`) ya está resuelto.
+- **Ventajas:** cero coste de migración; la API y los consumidores actuales
+  siguen funcionando; el equipo mantiene una sola base de código y un solo
+  conjunto de pruebas; el despliegue actual (`pip install`) ya está resuelto.
 - **Desventajas:** mayor consumo de memoria y menor rendimiento que Rust en
   cargas muy grandes; requiere intérprete de Python.
-- **Cuándo tiene sentido:** el caso de uso es una librería de apoyo para una app
-  Flask y los volúmenes de datos son moderados. Es el escenario actual.
+- **Cuándo tiene sentido:** el caso de uso es una librería de apoyo para scripts
+  y servicios Python con volúmenes moderados. Es el escenario actual.
 
 ### Opción 2: Reescritura completa en Rust
 
 - **Ventajas:** rendimiento, memoria predecible, binario único, sin intérprete.
-- **Desventajas:** rompe la API Python; obliga a reescribir la app o a crear
-  puentes FFI; hay que replicar 49 pruebas y la documentación; se pierde la
-  integración directa con Flask; el equipo asume la curva de aprendizaje de
-  Rust y el mantenimiento de dos ecosistemas.
+- **Desventajas:** rompe la API Python; obliga a reescribir los consumidores o a
+  crear puentes FFI; hay que replicar 49 pruebas y la documentación; se pierde
+  la integración directa con el ecosistema Python; el equipo asume la curva de
+  aprendizaje de Rust y el mantenimiento de dos ecosistemas.
 - **Coste estimado:** 4 a 8 semanas para alcanzar paridad funcional, más el
-  trabajo de empaquetado y de integración con la app.
+  trabajo de empaquetado y de integración con los consumidores.
 - **Cuándo tiene sentido:** el producto deja de ser una librería Python y se
   convierte en un CLI o servicio independiente con requisitos de rendimiento
   demostrados.
@@ -74,14 +75,13 @@ probado y documentado.
 - **Cuándo tiene sentido:** hay una necesidad real de rendimiento y se quiere
   mantener compatibilidad con los clientes Python.
 
-### Opción 4: Servicio Rust (Axum) y app como cliente HTTP
+### Opción 4: Servicio Rust (Axum) con clientes HTTP
 
-- **Ventajas:** desacopla el motor de la app; se puede escalar por separado;
-  el componente deja de depender del runtime de Python.
+- **Ventajas:** desacopla el motor de los consumidores; se puede escalar por
+  separado; el componente deja de depender del runtime de Python.
 - **Desventajas:** añade un salto de red, despliegue, autenticación,
-  observabilidad y manejo de errores distribuidos; para una app local de
-  demostración es sobredimensionado; la latencia de red puede anular la ganancia
-  de Rust.
+  observabilidad y manejo de errores distribuidos; para una librería local es
+  sobredimensionado; la latencia de red puede anular la ganancia de Rust.
 - **Coste estimado:** 4 a 6 semanas, sin contar operación.
 - **Cuándo tiene sentido:** el motor se comparte entre varios servicios o se
   necesita escalar horizontalmente.
@@ -96,26 +96,27 @@ probado y documentado.
 | Complejidad de despliegue | Baja | Media | Media-alta | Alta |
 | Curva de aprendizaje | Baja | Alta | Alta | Alta |
 | Coste de migración | Nulo | Alto | Medio | Alto |
-| Riesgo para la app Flask | Nulo | Alto | Bajo | Medio |
+| Riesgo para consumidores Python | Nulo | Alto | Bajo | Medio |
 | Madurez del ecosistema para este caso | Alta | Alta | Alta | Alta |
 
 ## Decisión
 
 **No migrar el componente a Rust en la serie 1.x.** El componente actual cumple
 los requisitos funcionales, no tiene dependencias de ejecución y su rendimiento
-es suficiente para el caso de uso previsto (una app Flask local y payloads de
-tamaño moderado). Una reescritura completa introduciría un riesgo alto sin una
-necesidad medida.
+es suficiente para el caso de uso previsto (payloads de tamaño moderado en
+scripts y servicios Python). Una reescritura completa introduciría un riesgo
+alto sin una necesidad medida.
 
 Si en el futuro aparece un requisito concreto de rendimiento o distribución, la
 ruta de menor riesgo es la **Opción 3 (núcleo Rust + PyO3)**, precedida por un
 *benchmark* reproducible. La Opción 2 solo se justifica si el producto cambia de
-naturaleza (CLI o servicio independiente) y la app deja de ser el cliente
-principal.
+naturaleza (CLI o servicio independiente) y los consumidores dejan de ser
+Python.
 
 ## Consecuencias
 
-- Se mantiene la API pública y la app sigue consumiendo `pii_anonymizer.api`.
+- Se mantiene la API pública y los consumidores siguen usando
+  `pii_anonymizer.api`.
 - No se agregan dependencias de compilación ni *wheels* específicos.
 - La decisión se revisa si cambia alguno de estos supuestos:
   - payloads habituales mayores a decenas de MB;

@@ -222,14 +222,13 @@ La app web de demostración vive en un repositorio independiente:
 
 **[danielromo2001/pii-anonymizer-workshop-app](https://github.com/danielromo2001/pii-anonymizer-workshop-app)**
 
-Usa Flask + SQLite y consume esta librería **únicamente** a través de
-`pii_anonymizer.api`. Incluye modo privacidad global, auditoría con
-`audit_compliance`, logs sanitizados con `anonymize_text`, exportación JSON con
-`anonymize_map` y un laboratorio de texto.
+Es un CRUD de clientes, vehículos y órdenes con Flask + SQLite. **No consume
+esta librería**: se mantiene como un ejemplo de dominio separado, con sus
+propias instrucciones, pruebas y diagrama de clases. La integración con la API
+pública se muestra en `examples/demo_cli.py`.
 
-La app tiene sus propias instrucciones de instalación, sus pruebas y su
-diagrama de clases. Este repositorio queda enfocado en el componente
-reutilizable y no contiene la app de prueba.
+Este repositorio queda enfocado en el componente reutilizable y no contiene la
+app de prueba.
 
 ## 11. Documentación
 

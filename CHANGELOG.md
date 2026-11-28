@@ -10,7 +10,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 - La aplicación de demostración `workshop_app/` se movió a su propio
   repositorio: [pii-anonymizer-workshop-app](https://github.com/danielromo2001/pii-anonymizer-workshop-app).
-  Este repositorio queda enfocado en el componente reutilizable.
+  Allí quedó como un CRUD Flask + SQLite independiente que **no** consume esta
+  librería. Este repositorio queda enfocado en el componente reutilizable.
 - El diagrama de clases de la app ahora vive en el repositorio de la app; el
   repositorio del componente conserva solo su propio diagrama.
 
