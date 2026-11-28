@@ -6,15 +6,19 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## Unreleased
 
+### Changed
+
+- La aplicación de demostración `workshop_app/` se movió a su propio
+  repositorio: [pii-anonymizer-workshop-app](https://github.com/danielromo2001/pii-anonymizer-workshop-app).
+  Este repositorio queda enfocado en el componente reutilizable.
+- El diagrama de clases de la app ahora vive en el repositorio de la app; el
+  repositorio del componente conserva solo su propio diagrama.
+
 ### Added
 
-- Aplicación de demostración `workshop_app/` con Flask y SQLite para gestionar
-  clientes, vehículos y órdenes de un taller mecánico.
-- Modo privacidad, auditoría, logs sanitizados, exportación JSON anonimizada y
-  laboratorio de texto en la app de demostración.
-- Reglas de ejemplo para teléfonos, nombres, direcciones y VIN usando solo la
-  API pública de `pii-anonymizer`.
-- Pruebas de humo de la app con Flask test client.
+- Diagrama de clases editable del componente en
+  `docs/02-tecnica/diagrama-clases-componente.drawio`.
+- ADR-005 con la evaluación de una posible migración del componente a Rust.
 
 ## 1.0.0 - 2026-11-24
 

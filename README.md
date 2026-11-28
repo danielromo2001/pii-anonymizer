@@ -218,25 +218,18 @@ El script usa exclusivamente la API pública y muestra las cuatro funcionalidade
 
 ## 10. Aplicación de ejemplo: taller mecánico
 
-El repositorio incluye una app web local en `workshop_app/` para probar la
-librería en un caso de uso realista: gestión de clientes, vehículos y órdenes de
-trabajo de un taller mecánico.
+La app web de demostración vive en un repositorio independiente:
 
-```powershell
-pip install -r workshop_app/requirements.txt
-python -m workshop_app.app
-```
+**[danielromo2001/pii-anonymizer-workshop-app](https://github.com/danielromo2001/pii-anonymizer-workshop-app)**
 
-Abre `http://127.0.0.1:5000`. La app incluye:
+Usa Flask + SQLite y consume esta librería **únicamente** a través de
+`pii_anonymizer.api`. Incluye modo privacidad global, auditoría con
+`audit_compliance`, logs sanitizados con `anonymize_text`, exportación JSON con
+`anonymize_map` y un laboratorio de texto.
 
-- modo privacidad global para enmascarar datos en listados y fichas;
-- auditoría con `audit_compliance`;
-- logs sanitizados con `anonymize_text`;
-- exportación JSON anonimizada con `anonymize_map`;
-- laboratorio de texto para probar detección de correos, tarjetas y teléfonos.
-
-Consulta [workshop_app/README.md](workshop_app/README.md) para el recorrido
-completo y las instrucciones de instalación.
+La app tiene sus propias instrucciones de instalación, sus pruebas y su
+diagrama de clases. Este repositorio queda enfocado en el componente
+reutilizable y no contiene la app de prueba.
 
 ## 11. Documentación
 
@@ -252,11 +245,14 @@ completo y las instrucciones de instalación.
 - [Calidad ISO/IEC 25010](docs/02-tecnica/calidad-iso25010.md)
 - [Arquitectura C4](docs/02-tecnica/arquitectura-c4.md)
 - [Diagramas UML](docs/02-tecnica/diagramas-uml.md)
+  - [Diagrama de clases del componente (Draw.io)](docs/02-tecnica/diagrama-clases-componente.drawio)
+  - [Diagrama de clases de la app de taller (repo externo)](https://github.com/danielromo2001/pii-anonymizer-workshop-app/blob/main/docs/diagrama-clases-app-taller.drawio)
 - [Matriz SOLID/GRASP](docs/02-tecnica/matriz-solid-grasp.md)
 - ADR-001: [Arquitectura Limpia y aislamiento de la API](docs/02-tecnica/adr/001-arquitectura-limpia-y-aislamiento-api.md)
 - ADR-002: [Patrón creacional Builder](docs/02-tecnica/adr/002-patron-creacional-builder.md)
 - ADR-003: [Patrón estructural Composite](docs/02-tecnica/adr/003-patron-estructural-composite.md)
 - ADR-004: [Patrones de comportamiento Strategy y Chain](docs/02-tecnica/adr/004-patrones-comportamiento-strategy-chain.md)
+- ADR-005: [Evaluación de migración a Rust](docs/02-tecnica/adr/005-evaluacion-migracion-rust.md)
 
 ## 12. Notas de seguridad
 

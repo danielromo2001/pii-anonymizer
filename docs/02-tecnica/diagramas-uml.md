@@ -1,6 +1,20 @@
 # Diagramas UML
 
-Los diagramas se generan con Mermaid y representan las clases y colaboraciones reales de `pii-anonymizer` 1.0.0.
+Los diagramas Mermaid de este documento representan las clases y colaboraciones reales de `pii-anonymizer` 1.0.0.
+
+## Diagrama Draw.io editable
+
+El componente tiene un diagrama de clases editable:
+
+| Alcance | Archivo | Contenido |
+| --- | --- | --- |
+| Componente `pii-anonymizer` | [diagrama-clases-componente.drawio](diagrama-clases-componente.drawio) | Capas `api`, `application`, `domain` e `infrastructure`, puertos, casos de uso, patrones Builder, Facade, Composite, Strategy y Chain. |
+
+El archivo se abre y edita con [Draw.io](https://app.diagrams.net/) o con la aplicación de escritorio.
+
+La app de demostración tiene su **propio diagrama independiente** en su repositorio:
+[diagrama-clases-app-taller.drawio](https://github.com/danielromo2001/pii-anonymizer-workshop-app/blob/main/docs/diagrama-clases-app-taller.drawio).
+No es una figura combinada con la del componente: cada repositorio documenta su alcance.
 
 ## 1. Diagrama de clases
 

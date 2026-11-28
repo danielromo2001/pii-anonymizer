@@ -9,8 +9,8 @@ dist/
 *.egg-info/
 *.egg
 
-# Local demo database
-workshop_app/workshop.db
+# Diagram previews
+docs/02-tecnica/_preview_*.html
 
 # Test and coverage artifacts
 .pytest_cache/
